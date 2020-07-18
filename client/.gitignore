@@ -13,7 +13,6 @@
 
 # exclude everything
 /client/public/uploads/*
-
 # exception to the rule
 !/client/public/uploads/.gitkeep 
 
