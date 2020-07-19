@@ -26,7 +26,7 @@ app.post('/upload', (req, res) => {
 
       res.json({
         pdfName: pdf.name,
-        pdfPath: `/uploads/${pdf.name}`,
+        pdfPath: `uploads/${pdf.name}`,
       })
     }
   )
