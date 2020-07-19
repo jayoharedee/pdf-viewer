@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import Message from './Message'
 import Progress from './Progress'
+import Viewer from './Viewer'
 
 const FileUpload = () => {
   const [pdf, setPdf] = useState('')
@@ -19,6 +20,7 @@ const FileUpload = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault()
+    console.log(event.target, 'response')
     const formData = new FormData()
     formData.append('pdf', pdf)
 
@@ -89,11 +91,15 @@ const FileUpload = () => {
               {uploadedPdf.pdfName}
             </h3>
 
-            <img
+            <Viewer pdfPath={uploadedPdf.pdfPath} />
+
+            {/* <img
               style={{ width: '100%' }}
               src={uploadedPdf.pdfPath}
               alt=""
-            />
+            /> */
+            console.log(uploadedPdf.pdfName)
+            }
           </div>
         </div>
       ) : null}
