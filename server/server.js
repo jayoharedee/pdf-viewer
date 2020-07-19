@@ -1,3 +1,4 @@
+const base64Encoder = require('./utils/getBase64String')
 const express = require('express')
 const fileupload = require('express-fileupload')
 
@@ -24,9 +25,12 @@ app.post('/upload', (req, res) => {
         return res.status(500).send(err)
       }
 
+      // const base64PDFData = base64Encoder(pdf.data)
+
+      console.log(pdf.data)
       res.json({
         pdfName: pdf.name,
-        pdfPath: `/uploads/${pdf.name}`,
+        pdfPath: `/uploads/${pdf.data}`,
       })
     }
   )
