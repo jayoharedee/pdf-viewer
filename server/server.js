@@ -1,6 +1,9 @@
-const base64Encoder = require('./utils/getBase64String')
 const express = require('express')
+const cors = require('cors')
 const fileupload = require('express-fileupload')
+
+const newID = require('./utils/generateID')
+const decodeBase64Array = require('./utils/decodeBase64Array')
 
 const app = express()
 
@@ -8,16 +11,19 @@ const app = express()
 app.use(fileupload())
 
 // upload endpoint
-app.post('/upload', (req, res) => {
+app.post('/upload', cors(), (req, res) => {
   // reject bad requests
   if (req.files === null) {
     return res.status(400).json({ msg: 'No file uploaded' })
   }
 
   const pdf = req.files.pdf
+  const pdfName = `${newID()}${pdf.name}`
+  const base64ToPDF = decodeBase64Array(pdf.data)
 
+  console.log(pdf)
   pdf.mv(
-    `${__dirname}/../client/public/uploads/${pdf.name}`,
+    `${__dirname}/../client/public/uploads/${pdfName}`,
     (err) => {
       // reject server errors
       if (err) {
@@ -25,12 +31,10 @@ app.post('/upload', (req, res) => {
         return res.status(500).send(err)
       }
 
-      // const base64PDFData = base64Encoder(pdf.data)
-
-      console.log(pdf.pdfPath)
       res.json({
         pdfName: pdf.name,
-        pdfPath: `/uploads/${pdf.pdfPath}`,
+        pdfPath: `uploads/${pdfName}`,
+        pdfData: base64ToPDF,
       })
     }
   )
