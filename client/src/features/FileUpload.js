@@ -3,7 +3,9 @@ import axios from 'axios'
 
 import Message from './Message'
 import Progress from './Progress'
-import Viewer from './Viewer'
+import Base64ToPDF from './Base64ToPDF'
+
+import decodeBase64Array from '../utils/decodeBase64Array'
 
 const FileUpload = () => {
   const [pdf, setPdf] = useState('')
@@ -20,7 +22,6 @@ const FileUpload = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault()
-    console.log(event.target, 'response')
     const formData = new FormData()
     formData.append('pdf', pdf)
 
@@ -42,8 +43,10 @@ const FileUpload = () => {
         },
       })
 
-      const { pdfName, pdfPath } = response.data
-      setUploadedPdf({ pdfName, pdfPath })
+      console.log(response.data)
+      const { pdfName, pdfPath, pdfData } = response.data
+      console.log(pdfData)
+      setUploadedPdf({ pdfName, pdfPath, pdfData })
       setMessage('File Uploaded')
     } catch (error) {
       console.log(error)
@@ -57,6 +60,12 @@ const FileUpload = () => {
     }
   }
 
+  const pdf64Decoded = uploadedPdf.pdfData
+    ? uploadedPdf.pdfData.data
+    : null
+  // const pdfDecoded = pdf64Decoded.data
+  const decodedBase64 = decodeBase64Array(pdf64Decoded)
+  console.log(decodedBase64)
   return (
     <Fragment>
       {message ? <Message msg={message} /> : null}
@@ -76,6 +85,7 @@ const FileUpload = () => {
           </label>
         </div>
 
+
         <Progress percentage={uploadPercentage} />
 
         <input
@@ -85,21 +95,13 @@ const FileUpload = () => {
         />
       </form>
       {uploadedPdf ? (
-        <div className="row mt-5">
+        <div className="container">
           <div className="col-md-6 m-auto">
             <h3 className="text-center">
               {uploadedPdf.pdfName}
             </h3>
 
-            <Viewer pdfPath={uploadedPdf.pdfPath} />
-
-            {/* <img
-              style={{ width: '100%' }}
-              src={uploadedPdf.pdfPath}
-              alt=""
-            /> */
-            console.log(uploadedPdf.pdfName)
-            }
+            <Base64ToPDF base64={decodedBase64} />
           </div>
         </div>
       ) : null}

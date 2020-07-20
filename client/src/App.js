@@ -1,5 +1,5 @@
 import React from 'react'
-import FileUpload from './components/FileUpload'
+import FileUpload from './features/FileUpload'
 
 function App() {
   return (
