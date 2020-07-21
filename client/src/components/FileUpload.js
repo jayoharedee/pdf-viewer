@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import Message from './Message'
 import Progress from './Progress'
+import RenderPDF from './RenderPDF'
 
 const FileUpload = () => {
   const [pdf, setPdf] = useState('')
@@ -89,11 +90,12 @@ const FileUpload = () => {
               {uploadedPdf.pdfName}
             </h3>
 
-            <img
+            <RenderPDF />
+            {/* <img
               style={{ width: '100%' }}
               src={uploadedPdf.pdfPath}
               alt=""
-            />
+            /> */}
           </div>
         </div>
       ) : null}
